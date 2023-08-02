@@ -18,7 +18,9 @@ local Notifications = {}
 local NotifTables = {}
 
 local function DrawNotification(x, y, w, h, text, icon, col, progress)
+	BSHADOWS.BeginShadow()
 	draw.RoundedBoxEx(DarkRP.Config.RoundedBoxValue, x, y, w, h, DarkRP.Config.Colors["Main"], false, true, false, true)
+    BSHADOWS.EndShadow(2, 2, 2, 255, 0, 0)
 
 	draw.SimpleText(text, DarkRP.Library.Font(6), x + 42, y + h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	surface.SetDrawColor(color_white)
@@ -74,8 +76,8 @@ end
 hook.Add("HUDPaint", "DrawNotifications", function()
 	for k, v in ipairs(Notifications) do
 		DrawNotification(math.Round(v.x), math.Round(v.y), v.w, v.h, v.text, v.icon, v.col, v.progress)
-		v.x = Lerp(FrameTime() * 10, v.x, v.time > CurTime() and ScrW() - v.w - 10 or ScrW() + 1)
-		v.y = Lerp(FrameTime() * 10, v.y, DarkRP.ScrW * 0.02 + (k - 1) * (v.h + 5))
+		v.x = Lerp(FrameTime() * 4, v.x, v.time > CurTime() and ScrW() - v.w - 10 or ScrW() + 1)
+		v.y = DarkRP.ScrW * 0.02 + (k - 0.8) * (v.h + 15)
 	end
 
 	for k = #Notifications, 1, -1 do

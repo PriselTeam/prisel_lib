@@ -73,24 +73,24 @@ function PANEL:DrawBackground()
     local w, h = self:GetWide(), self:GetTall()
     local x, y = self:LocalToScreen(0, 0)
 
+    BSHADOWS.BeginShadow()
     draw.RoundedBox(DarkRP.Config.RoundedBoxValue, x, y, w, h, DarkRP.Config.Colors["Main"])
     draw.RoundedBox(DarkRP.Config.RoundedBoxValue, x, y, w, DarkRP.ScrH * 0.073, DarkRP.Config.Colors["Secondary"])
+    BSHADOWS.EndShadow(2, 4, 2, 255, 0, 0)
 
     surface.SetDrawColor(color_white)
     surface.SetMaterial(DarkRP.Library.FetchCDN("prisel_main/prisel_logo_bleu"))
-    surface.DrawTexturedRect(x + (439 / 8) - DarkRP.ScrW / DarkRP.ScrW - DarkRP.ScrH * 0.073 / 2, y + (439 / 8) + DarkRP.ScrW / DarkRP.ScrW - DarkRP.ScrH * 0.073 / 2, (624 / 8) - DarkRP.ScrW / DarkRP.ScrW, (439 / 8) - DarkRP.ScrW / DarkRP.ScrW)
+    surface.DrawTexturedRect((439 / 8) - DarkRP.ScrW / DarkRP.ScrW - DarkRP.ScrH * 0.073 / 2, (439 / 8) + DarkRP.ScrW / DarkRP.ScrW - DarkRP.ScrH * 0.073 / 2, (624 / 8) - DarkRP.ScrW / DarkRP.ScrW, (439 / 8) - DarkRP.ScrW / DarkRP.ScrW)
 
-    draw.SimpleText(self.title or "PRISEL", DarkRP.Library.Font(14, 0, "Montserrat Bold"), x + DarkRP.ScrW * 0.055, ((self.description == nil) and y + DarkRP.ScrH * 0.073 / 2 or y + DarkRP.ScrH * 0.06 / 2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.SimpleText(self.title or "PRISEL", DarkRP.Library.Font(14, 0, "Montserrat Bold"), DarkRP.ScrW * 0.055, ((self.description == nil) and DarkRP.ScrH * 0.073 / 2 or DarkRP.ScrH * 0.06 / 2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
     if self.description ~= nil then
-        draw.SimpleText(self.description or "", DarkRP.Library.Font(6), x + DarkRP.ScrW * 0.055, y + DarkRP.ScrH * 0.11 / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(self.description or "", DarkRP.Library.Font(6), DarkRP.ScrW * 0.055, DarkRP.ScrH * 0.11 / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 end
 
 function PANEL:Paint()
-    BSHADOWS.BeginShadow()
-        self:DrawBackground()
-    BSHADOWS.EndShadow(2, 4, 2, 255, 0, 0)
+    self:DrawBackground()
 end
 
 vgui.Register("Prisel.Frame", PANEL, "EditablePanel")
