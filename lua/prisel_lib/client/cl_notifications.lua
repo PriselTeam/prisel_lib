@@ -77,7 +77,7 @@ hook.Add("HUDPaint", "DrawNotifications", function()
 	for k, v in ipairs(Notifications) do
 		DrawNotification(math.Round(v.x), math.Round(v.y), v.w, v.h, v.text, v.icon, v.col, v.progress)
 		v.x = Lerp(FrameTime() * 4, v.x, v.time > CurTime() and ScrW() - v.w - 10 or ScrW() + 1)
-		v.y = DarkRP.ScrW * 0.02 + (k - 0.8) * (v.h + 15)
+		v.y = DarkRP.ScrW * 0.02 + (k - 0.8) * (v.h + 10)
 	end
 
 	for k = #Notifications, 1, -1 do
@@ -90,7 +90,6 @@ end)
 
 function notifDark(msg)
 	local msg = msg:ReadString()
-	print(msg)
 	notification.AddLegacy(msg, NOTIFY_GENERIC, 5)
 end
 
