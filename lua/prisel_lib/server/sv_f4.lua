@@ -2,7 +2,6 @@ util.AddNetworkString("PriselV3::F4:Graph:SendInfos")
 
 local infos = {
   ["connect"] = 0,
-  ["disconnect"] = 0,
   ["kill"] = 0,
   ["death"] = 0
 }
@@ -18,12 +17,11 @@ hook.Add("PlayerInitialSpawn", "PriselV3::F4:Graph:PlayerInitialSpawn", function
   infos["connect"] = infos["connect"] + 1
 end)
 
-hook.Add("PlayerDisconnected", "PriselV3::F4:Graph:PlayerDisconnected", function(ply)
-  infos["disconnect"] = infos["disconnect"] + 1
-end)
-
 net.Receive("PriselV3::F4:Graph:SendInfos", function(len, ply)
+  print("PriselV3::F4:Graph:SendInfos")
   net.Start("PriselV3::F4:Graph:SendInfos")
-  net.WriteTable(infos)
+    net.WriteUInt(infos["connect"], 32)
+    net.WriteUInt(infos["kill"], 32)
+    net.WriteUInt(infos["death"], 32)
   net.Send(ply)
 end)

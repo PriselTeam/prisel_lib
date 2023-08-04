@@ -13,7 +13,8 @@ function db:onConnected()
         CREATE TABLE IF NOT EXISTS player_times (
             id INT AUTO_INCREMENT PRIMARY KEY,
             steamid VARCHAR(255) NOT NULL,
-            times JSON NOT NULL
+            times JSON NOT NULL,
+            isConnected BOOLEAN NOT NULL DEFAULT FALSE,
         )
     ]]
 
@@ -53,6 +54,7 @@ function PLAYER:SaveTime()
         local query2
 
         if result[1] then
+            -- query2 = db:query("UPDATE player_times SET times = '" .. jsonTimes .. "' WHERE steamid = '" .. steamid .. "'")
             query2 = db:query("UPDATE player_times SET times = '" .. jsonTimes .. "' WHERE steamid = '" .. steamid .. "'")
         else
             query2 = db:query("INSERT INTO player_times (steamid, times) VALUES ('" .. steamid .. "', '" .. jsonTimes .. "')")
@@ -72,15 +74,46 @@ function PLAYER:SaveTime()
     query:start()
 end
 
+function PLAYER:SetConnectedDB()
+    local steamid = self:SteamID64()
+
+    local query = db:query("UPDATE player_times SET isConnected = 1 WHERE steamid = '" .. steamid .. "'")
+    query:start()
+
+    query.onError = function(_, err)
+        print("Erreur lors de la mise à jour des données dans la base de données: " .. err)
+    end
+end
+
+function PLAYER:SetDisconnectedDB()
+    local steamid = self:SteamID64()
+
+    local query = db:query("UPDATE player_times SET isConnected = 0 WHERE steamid = '" .. steamid .. "'")
+    query:start()
+
+    query.onError = function(_, err)
+        print("Erreur lors de la mise à jour des données dans la base de données: " .. err)
+    end
+end
+
+hook.Add("PlayerInitialSpawn", "PriselV3:CalcTimes", function(ply)
+    if not ply:IsPlayer() then return end
+    if ply:IsBot() then return end
+
+    ply:SetConnectedDB()
+end)
+
 hook.Add("PlayerDisconnected", "PriselV3:CalcTimes", function(ply)
     if not ply:IsPlayer() then return end
     if ply:IsBot() then return end
 
     ply:SaveTime()
+    ply:SetDisconnectedDB()
 end)
 
 hook.Add("ShutDown", "PriselV3:CalcTimes", function()
     for _, ply in ipairs(player.GetHumans()) do
         ply:SaveTime()
+        ply:SetDisconnectedDB()
     end
 end)
