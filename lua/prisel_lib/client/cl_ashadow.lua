@@ -2,10 +2,10 @@ if BSHADOWS == nil then
     BSHADOWS = {}
     
     --The original drawing layer
-    BSHADOWS.RenderTarget = GetRenderTarget("bshadows_original", ScrW(), ScrH())
+    BSHADOWS.RenderTarget = GetRenderTarget("bshadows_original", DarkRP.ScrW, DarkRP.ScrH)
     
     --The shadow layer
-    BSHADOWS.RenderTarget2 = GetRenderTarget("bshadows_shadow",  ScrW(), ScrH())
+    BSHADOWS.RenderTarget2 = GetRenderTarget("bshadows_shadow",  DarkRP.ScrW, DarkRP.ScrH)
     
     --The matarial to draw the render targets on
     BSHADOWS.ShadowMaterial = CreateMaterial("bshadows","UnlitGeneric",{
@@ -77,7 +77,7 @@ if BSHADOWS == nil then
         BSHADOWS.ShadowMaterialGrayscale:SetFloat("$alpha", opacity/255) --set the alpha of the shadow
         render.SetMaterial(BSHADOWS.ShadowMaterialGrayscale)
         for i = 1 , math.ceil(intensity) do
-            render.DrawScreenQuadEx(xOffset, yOffset, ScrW(), ScrH())
+            render.DrawScreenQuadEx(xOffset, yOffset, DarkRP.ScrW, DarkRP.ScrH)
         end
     
         if not _shadowOnly then
@@ -123,7 +123,7 @@ if BSHADOWS == nil then
         BSHADOWS.ShadowMaterialGrayscale:SetFloat("$alpha", opacity/255) --Set the alpha
         render.SetMaterial(BSHADOWS.ShadowMaterialGrayscale)
         for i = 1 , math.ceil(intensity) do
-            render.DrawScreenQuadEx(xOffset, yOffset, ScrW(), ScrH())
+            render.DrawScreenQuadEx(xOffset, yOffset, DarkRP.ScrW, DarkRP.ScrH)
         end
         if not shadowOnly then
             --Now draw the original

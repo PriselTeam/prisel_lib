@@ -75,12 +75,15 @@ function PANEL:DrawBackground()
 
     BSHADOWS.BeginShadow()
     draw.RoundedBox(DarkRP.Config.RoundedBoxValue, x, y, w, h, DarkRP.Config.Colors["Main"])
-    draw.RoundedBox(DarkRP.Config.RoundedBoxValue, x, y, w, DarkRP.ScrH * 0.073, DarkRP.Config.Colors["Secondary"])
+    draw.RoundedBoxEx(DarkRP.Config.RoundedBoxValue, x, y, w, DarkRP.ScrH * 0.073, DarkRP.Config.Colors["Secondary"], true, true, false, false)
     BSHADOWS.EndShadow(2, 4, 2, 255, 0, 0)
+
+    local iWLogo = (439 / 8) - DarkRP.ScrW / DarkRP.ScrW
+    local iHLogo = (624 / 8) - DarkRP.ScrH / DarkRP.ScrH
 
     surface.SetDrawColor(color_white)
     surface.SetMaterial(DarkRP.Library.FetchCDN("prisel_main/prisel_logo_bleu"))
-    surface.DrawTexturedRect((439 / 8) - DarkRP.ScrW / DarkRP.ScrW - DarkRP.ScrH * 0.073 / 2, (439 / 8) + DarkRP.ScrW / DarkRP.ScrW - DarkRP.ScrH * 0.073 / 2, (624 / 8) - DarkRP.ScrW / DarkRP.ScrW, (439 / 8) - DarkRP.ScrW / DarkRP.ScrW)
+    surface.DrawTexturedRect(iWLogo/2 - DarkRP.ScrW * 0.01 /2, iHLogo/2 - DarkRP.ScrH * 0.073/3, iHLogo, iWLogo)
 
     draw.SimpleText(self.title or "PRISEL", DarkRP.Library.Font(14, 0, "Montserrat Bold"), DarkRP.ScrW * 0.055, ((self.description == nil) and DarkRP.ScrH * 0.073 / 2 or DarkRP.ScrH * 0.06 / 2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 

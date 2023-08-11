@@ -94,3 +94,14 @@ function notifDark(msg)
 end
 
 usermessage.Hook("_Notify", notifDark)
+
+concommand.Add("pls", function()
+	local frame = vgui.Create("Prisel.Frame")
+	frame:SetSize(ScrW() * 0.5, ScrH() * 0.5)
+	frame:Center()
+	frame:MakePopup()
+	frame:SetTitle("Debug")
+	
+	local checkBox = frame:Add("Prisel.CheckBox")
+	checkBox:SetPos(10, 95)
+end)

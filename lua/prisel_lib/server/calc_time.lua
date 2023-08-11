@@ -14,7 +14,7 @@ function db:onConnected()
             id INT AUTO_INCREMENT PRIMARY KEY,
             steamid VARCHAR(255) NOT NULL,
             times JSON NOT NULL,
-            isConnected BOOLEAN NOT NULL DEFAULT FALSE,
+            isConnected BOOLEAN NOT NULL DEFAULT FALSE
         )
     ]]
 
@@ -80,6 +80,10 @@ function PLAYER:SetConnectedDB()
     local query = db:query("UPDATE player_times SET isConnected = 1 WHERE steamid = '" .. steamid .. "'")
     query:start()
 
+    query.onSuccess = function(_, result)
+        print("Connexion de " .. self:Nick() .. " (" .. self:SteamID() .. ")")
+    end
+
     query.onError = function(_, err)
         print("Erreur lors de la mise à jour des données dans la base de données: " .. err)
     end
@@ -97,18 +101,17 @@ function PLAYER:SetDisconnectedDB()
 end
 
 hook.Add("PlayerInitialSpawn", "PriselV3:CalcTimes", function(ply)
-    if not ply:IsPlayer() then return end
-    if ply:IsBot() then return end
 
-    ply:SetConnectedDB()
+    if ply:IsPlayer() then
+        ply:SetConnectedDB()
+    end
 end)
 
 hook.Add("PlayerDisconnected", "PriselV3:CalcTimes", function(ply)
-    if not ply:IsPlayer() then return end
-    if ply:IsBot() then return end
-
-    ply:SaveTime()
-    ply:SetDisconnectedDB()
+    if ply:IsPlayer() then
+        ply:SaveTime()
+        ply:SetDisconnectedDB()
+    end
 end)
 
 hook.Add("ShutDown", "PriselV3:CalcTimes", function()

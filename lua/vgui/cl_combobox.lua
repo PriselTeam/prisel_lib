@@ -85,18 +85,16 @@ function PANEL:OpenMenu()
     if self:IsMenuOpen() then return end
     local menu = vgui.Create("DPanel")
     self.menu = menu
-    self.menu:SetSize(self:GetWide(), self:GetTall() * math.Clamp(#self.options, 0, 5) + (50))
+    self.menu:SetSize(self:GetWide(), DarkRP.ScrH*0.0335 * math.Clamp(#self.options, 0, 5))
     self.menu:SetPos(self:LocalToScreen(0, self:GetTall()+5))
     self.menu:SlideDown(0.5)
-    self.menu.Paint = function(self, w, h)
-    end
 
     local scroll = vgui.Create("DScrollPanel", self.menu)
     scroll:Dock(FILL)
 
     local empty = table.IsEmpty(self.options)
 
-    function scroll:Paint(w, h)
+    function self.menu:Paint(w, h)
         local x, y = self:LocalToScreen(0, 0)
         BSHADOWS.BeginShadow()
             draw.RoundedBox(DarkRP.Config.RoundedBoxValue, x, y, w, h, DarkRP.Config.Colors["Main"])
@@ -111,8 +109,9 @@ function PANEL:OpenMenu()
     for k, v in ipairs(self.options) do
         local option = scroll:Add("Prisel.Button")
         option:Dock(TOP)
-        option:DockMargin(5, 5, 5, 5)
-        option:SetSize(self:GetWide(), self:GetTall())
+        option:DockMargin(scroll:GetWide()*0.05, scroll:GetWide()*0.05, scroll:GetWide()*0.05, scroll:GetWide()*0.05)
+        option:SetTall(DarkRP.ScrH*0.028)
+        option:CenterHorizontal()
         option:SetText(v.text)
         option:SetCursor("hand")
         option.DoClick = function()
